@@ -38,7 +38,10 @@ class Main_Grid : public QGridLayout
 	Q_OBJECT
 
 public:
-	Main_Grid(QWidget *parent) :QGridLayout(parent) { this->window_ = parent;}
+	Main_Grid(QWidget *parent) :QGridLayout(parent) { 
+		this->window_ = parent;
+		this->is_full_screen_ = false;
+	}
 	~Main_Grid() {}
 
 	void InitAll();
@@ -52,7 +55,16 @@ signals:
 	void isFullScreen(bool clicked);
 
 public slots:
-	void FullScreenClicked(){emit isFullScreen(true);}
+	void FullScreenClicked(){
+		if (this->is_full_screen_) {
+			is_full_screen_ = false;
+			emit isFullScreen(false);
+		}
+		else {
+			is_full_screen_ = true;
+			emit isFullScreen(true);
+		}
+	}
 
 private:
 	QWidget *window_;
@@ -79,6 +91,8 @@ private:
 	QPushButton * front_video_;
 	QPushButton * full_screen_;
 	The_Process_Bar * process_slider_;
+
+	bool is_full_screen_;
 
 	void SetVideoButton();
 	QScrollArea * button_scroll_;

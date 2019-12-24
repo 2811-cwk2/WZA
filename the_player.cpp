@@ -24,21 +24,19 @@ void The_Player::playStateChanged (QMediaPlayer::State ms) {
 
 // Use this block need to move the connect() from constructor to the Make_Connections
 	try {
-		QPushButton *button = dynamic_cast<Main_Grid *>(this->parent())->pause_play_;
+		QPushButton *button = static_cast<Main_Grid *>(this->parent())->pause_play_;
 		if (ms == QMediaPlayer::PlayingState) {
 			QPushButton::disconnect(button, SIGNAL(clicked()), this, SLOT(play()));
 			button->setText("Pause");
 			button->setShortcut(QKeySequence(QLatin1String("Space")));
 			QPushButton::connect(button, SIGNAL(clicked()), this, SLOT(pause()));
 		}
-		else if (ms == QMediaPlayer::PausedState) {
+		else {
 			QPushButton::disconnect(button, SIGNAL(clicked()), this, SLOT(pause()));
 			button->setText("Play");
 			button->setShortcut(QKeySequence(QLatin1String("Space")));
 			QPushButton::connect(button, SIGNAL(clicked()), this, SLOT(play()));
 		}
-		else
-			return;
 	}
 	catch (bad_cast) {
 		qDebug() << "Bad Cast in [playStateChanged]";
